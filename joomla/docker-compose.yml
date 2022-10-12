@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  joomla:
+    image: joomla
+    restart: always
+    volumes:
+      - joomla_data:/var/www/html
+    ports:
+      - 8080:80
+    environment:
+      JOOMLA_DB_HOST: joomladb
+      JOOMLA_DB_PASSWORD: joomla
+      JOOMLA_DB_USER: joomla
+    networks:
+      - joomla
+
+  joomladb:
+    image: mariadb:10.9.3-jammy
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=joomla
+      - MYSQL_DATABASE=joomla
+      - MYSQL_USER=joomla
+      - MYSQL_PASSWORD=joomla
+    networks:
+      - joomla
+
+networks:
+  joomla:
+    name: joomla
+    driver: bridge
+volumes:
+  joomla_data:
+  db_data:

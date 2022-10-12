@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  drupal:
+    image: drupal
+    ports:
+      - 8060:80
+    volumes:
+      - drupal_data:/var/www/html
+    environment:
+      - DB_HOST=postgres
+      - DB_USER=drupal
+      - DB_PASSWORD=drupal
+      - DB_NAME=drupal
+      - DB_DRIVER=mysql
+    restart: always
+
+  postgres:
+    image: postgres:14
+    environment:
+      - POSTGRES_PASSWORD=drupal
+      - POSTGRES_USER=drupal
+    volumes:
+        - db_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  drupal_data:
+  db_data:
